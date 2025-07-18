@@ -145,16 +145,6 @@ X_reconstructed = Decoder(z)  # High-fidelity reconstruction
 
 ## Experimental Results
 
-### Visual Quality Comparison
-
-<div align="center">
-<table>
-<tr>
-<td><img src="notebooks (self-explanatory)/imgs/vae.png" alt="VAE Baseline" width="200"><br><b>VAE Baseline</b></td>
-<td><img src="notebooks (self-explanatory)/imgs/dds_vae_architecture.png" alt="DDS+VAE" width="200"><br><b>DDS+VAE (Ours)</b></td>
-</tr>
-</table>
-</div>
 
 ### Performance Metrics
 
