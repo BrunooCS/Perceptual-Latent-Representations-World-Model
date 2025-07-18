@@ -1,17 +1,13 @@
-# **Perceptual Latent Representations: Improving Visual Fidelity and Autonomous Control in World Models**
+# Enhanced World Models with Dynamic Data Selection
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Paper](https://img.shields.io/badge/Final_Degree_Work-Available-orange.svg)](memory.pdf)
+[![Paper](https://img.shields.io/badge/Final_Degree_Work-Available-orange.svg)](memoria.md)
 
-> **Improving Visual Fidelity and Autonomous Control in World Models through Perceptual Latent Representations**
+> **Improving Visual Fidelity and Autonomous Control in Generative World Models through Perceptual Latent Representations**
 
-This repository contains the complete implementation of my Final Degree Work research on enhancing World Models through Dynamic Data Selection (DDS) and hierarchical autoencoder architectures with internal perceptual loss. The work addresses critical limitations in current World Models, particularly the visual quality of generated images and their impact on reinforcement learning agent performance.
-
-<div align="center">
-<img src="resources/Dream.gif" alt="Architecture Overview" width="80%">
-</div>
+This repository contains the complete implementation of my Final Degree Work research on enhancing World Models through Dynamic Data Selection (DDS) and hierarchical autoencoder architectures. The work addresses critical limitations in current World Models, particularly the visual quality of generated images and their impact on reinforcement learning agent performance.
 
 ## Key Achievements
 
@@ -22,7 +18,7 @@ This repository contains the complete implementation of my Final Degree Work res
 | **FID (Fréchet Inception Distance)** | **53% reduction** |
 | **FVD (Fréchet Video Distance)** | **26% reduction** |
 | **Agent Performance** | **12% increase** |
-| **Model Parameters** | **Maintained VAE baseline size** |
+| **Model Parameters** | **Maintained baseline size** |
 
 </div>
 
@@ -70,6 +66,9 @@ python src/train_controller.py
 
 Launch the interactive analysis:
 
+```bash
+jupyter lab "notebooks (self-explanatory)/"
+```
 
 **Available Notebooks:**
 - `1-Rollouts.ipynb` - Data generation and environment interaction
@@ -81,7 +80,7 @@ Launch the interactive analysis:
 
 ```
 World Model DDS/
-├── memory.pdf                       # Complete final degree work document (Spanish)
+├── memoria.md                       # Complete final degree work document (Spanish)
 ├── src/                             # Core implementation
 │   ├── rollouts.py                  # Environment data collection
 │   ├── train_dds_vae_stage1.py      # Vision model training (Phase 1)
@@ -117,11 +116,6 @@ World Model DDS/
 
 Our key contribution is a novel unsupervised feature selection mechanism:
 
-<div align="center">
-<img src="resources/DDS.gif" alt="DDS+VAE" width="100%">
-</div>
-
-
 ```python
 # Conceptual overview
 X_filtered = DDS(X) ⊙ X  # Element-wise masking
@@ -137,6 +131,9 @@ X_reconstructed = Decoder(z)  # High-fidelity reconstruction
 
 ### Two-Phase Training Strategy
 
+<div align="center">
+<img src="notebooks (self-explanatory)/imgs/batch_training_conrtoller.png" alt="Training Process" width="70%">
+</div>
 
 **Phase 1: Sparse Representation Learning**
 - Train DDS + U-Nets for optimal sparse masks
@@ -151,7 +148,12 @@ X_reconstructed = Decoder(z)  # High-fidelity reconstruction
 ### Visual Quality Comparison
 
 <div align="center">
-<img src="resources/reconstruction.png" alt="DDS+VAE" width="80%">
+<table>
+<tr>
+<td><img src="notebooks (self-explanatory)/imgs/vae.png" alt="VAE Baseline" width="200"><br><b>VAE Baseline</b></td>
+<td><img src="notebooks (self-explanatory)/imgs/dds_vae_architecture.png" alt="DDS+VAE" width="200"><br><b>DDS+VAE (Ours)</b></td>
+</tr>
+</table>
 </div>
 
 ### Performance Metrics
@@ -167,7 +169,6 @@ Our model generates more coherent and detailed "dream" sequences:
 
 <div align="center">
 <img src="notebooks (self-explanatory)/imgs/dream_diagram.png" alt="Dream Generation" width="80%">
-<img src="resources/dream_seq.png" alt="Dream Generation" width="80%">
 </div>
 
 ## Technical Details
@@ -186,7 +187,7 @@ Our model generates more coherent and detailed "dream" sequences:
 
 #### Memory Model (M)  
 - **Architecture**: LSTM + Mixture Density Network (MDN)
-- **Function**: Predict $p(z_{t+1} | z_t, a_t, h_t)$
+- **Function**: Predict p(z_{t+1} | z_t, a_t, h_t)
 - **Features**: Stochastic predictions, temperature control
 
 #### Controller (C)
@@ -222,14 +223,23 @@ epochs_phase2 = 2
 
 ### Reconstruction Quality
 - **MSE (Mean Squared Error)**: Pixel-level reconstruction accuracy
+- **SSIM**: Structural similarity index
 
 ### Generation Quality  
 - **FID (Fréchet Inception Distance)**: Distribution similarity of generated images
 - **FVD (Fréchet Video Distance)**: Temporal coherence of generated sequences
 
 ### Agent Performance
-- **Cumulative Reward**: Task performance in CarRacing environment over 100 tracks
+- **Cumulative Reward**: Task performance in CarRacing environment
+- **Success Rate**: Percentage of completed episodes
 
+## Future Work
+
+- **3D Environments**: Extend to complex 3D worlds
+- **Online Learning**: Continuous adaptation during deployment  
+- **Attention Mechanisms**: Integration with transformer architectures
+- **Multi-Task Learning**: Generalization across different domains
+- **Real-time Performance**: Optimization for real-time applications
 
 ## License
 
@@ -240,13 +250,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Advisors**: Brais Cancela Barizo and Carlos Eiras Franco
 - **Institution**: Universidade da Coruña, Facultade de Informática
 - **Inspiration**: David Ha and Jürgen Schmidhuber's seminal World Models work
-
+- **Community**: The open-source deep learning and reinforcement learning communities
 
 ---
 
 <div align="center">
 
+**Star this repository if you find it helpful!**
 
-[Contact](mailto:brunocorcuerasanchez@gmail.com) • [University](https://www.udc.es/en/) • [Full Work](memoria.pdf)
+[Contact](mailto:bruno.corcuera@udc.es) • [University](https://www.udc.es/en/) • [Full Work](memoria.md)
 
 </div>
