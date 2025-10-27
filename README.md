@@ -1,16 +1,40 @@
-# Enhanced World Models with Dynamic Data Selection
+# **Perceptual Latent Representations: Improving Visual Fidelity and Autonomous Control in World Models**
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Paper](https://img.shields.io/badge/Final_Degree_Work-Available-orange.svg)](memoria.md)
+[![Paper](https://img.shields.io/badge/arXiv-2510.01758-b31b1b.svg)](https://arxiv.org/abs/2510.01758)
+[![LinkedIn Post](https://img.shields.io/badge/LinkedIn-Post-0077B5?logo=linkedin)](https://www.linkedin.com/posts/brunocorcuera_hace-unos-d%C3%ADas-present%C3%A9-mi-trabajo-de-fin-activity-7351908461548335104-x0vA)
 
 > **Improving Visual Fidelity and Autonomous Control in Generative World Models through Perceptual Latent Representations**
 
-This repository contains the complete implementation of my Final Degree Work research on enhancing World Models through Dynamic Data Selection (DDS) and hierarchical autoencoder architectures. The work addresses critical limitations in current World Models, particularly the visual quality of generated images and their impact on reinforcement learning agent performance.
+This repository contains the complete implementation of my Final Degree Work (TFG) research, which has been extended into the following academic paper:
+
+---
+
+## 📰 Published Research
+
+This work forms the basis of our paper, **"Unsupervised Dynamic Feature Selection for Robust Latent Spaces in Vision Tasks"**, published on arXiv. This paper validates the novel unsupervised feature selection mechanism (DDS) proposed here, demonstrating its effectiveness in creating robust and efficient latent representations.
+
+**[► Read the full paper on arXiv: https://arxiv.org/abs/2510.01758](https://arxiv.org/abs/2510.01758)**
+
+### How to Cite
+
+If you find this work useful in your research, please consider citing:
+
+```bibtex
+@misc{corcuera2025unsupervised,
+      title={Unsupervised Dynamic Feature Selection for Robust Latent Spaces in Vision Tasks}, 
+      author={Bruno Corcuera and Carlos Eiras-Franco and Brais Cancela},
+      year={2025},
+      eprint={2510.01758},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 
 ## Key Achievements
-
+This project addresses critical limitations in World Models, particularly the visual quality of generated images and their impact on agent performance.
 <div align="center">
 
 | Metric | Improvement |
@@ -21,6 +45,16 @@ This repository contains the complete implementation of my Final Degree Work res
 | **Model Parameters** | **Maintained baseline size** |
 
 </div>
+
+## Free Software Utility
+This repository is not just a research artifact; it is a tool for the community built on open-source principles.
+
+For Researchers: Provides a validated, high-performance baseline for generative world models. The novel DDS component can be isolated and applied to other vision tasks requiring robust feature selection.
+
+For Students & Hobbyists: Offers a clear, well-documented implementation of a complex Deep Learning architecture (VAE + RNN + Controller), serving as an educational resource for learning about world models.
+
+Reproducibility: By providing the full code, pre-trained models, and experimental setup, this project champions the core FOSS value of scientific reproducibility. Others can build upon, verify, and extend this work.
+
 
 ## Architecture Overview
 
@@ -35,32 +69,64 @@ Our proposed architecture introduces a novel hierarchical approach combining:
 <img src="notebooks (self-explanatory)/imgs/dds_vae_architecture.png" alt="Architecture Overview" width="80%">
 </div>
 
-## Quick Start
+## Technical Innovation
 
-### Prerequisites
+### Dynamic Data Selection (DDS)
 
-An `environment.yml` file is provided for easy environment setup with conda.
+Our key contribution is a novel unsupervised feature selection mechanism:
 
-### Model Training
-
-Train the World Model components in sequence:
-
-```bash
-# 1. Generate training dataset
-python src/rollouts.py
-
-# 2. Train the vision model (DDS+VAE) - Phase 1
-python src/train_dds_vae_stage1.py
-
-# 3. Train the vision model (DDS+VAE) - Phase 2  
-python src/train_dds_vae_stage2.py
-
-# 4. Train memory model (MDN-RNN)
-python src/train_memory.py
-
-# 5. Train controller with CMA-ES
-python src/train_controller.py
+```python
+# Conceptual overview
+X_filtered = DDS(X) ⊙ X  # Element-wise masking
+z = Encoder(X_filtered)   # Compressed representation
+X_reconstructed = Decoder(z)  # High-fidelity reconstruction
 ```
+<div align="center">
+<img src="resources/DDS.gif" alt="Architecture Overview" width="80%">
+</div>
+
+**Benefits:**
+- **Selective Attention**: Focus on relevant pixels (2-8% selection)
+- **Noise Reduction**: Filter out irrelevant background information
+- **Spatial Preservation**: Maintain image structure for CNNs
+- **End-to-End Training**: Fully differentiable architecture
+
+### Two-Phase Training Strategy
+
+<div align="center">
+<img src="notebooks (self-explanatory)/imgs/batch_training_conrtoller.png" alt="Training Process" width="70%">
+</div>
+
+**Phase 1: Sparse Representation Learning**
+- Train DDS + U-Nets for optimal sparse masks
+- Learn to reconstruct from extremely sparse inputs (2-8% pixels)
+
+**Phase 2: Latent Space Compression** 
+- Train Mini-VAE with perceptual loss
+- Compress sparse representations to normalized latent space
+
+## Experimental Results
+
+
+### Performance Metrics
+
+| Environment | Model | MSE ↓ | FID ↓ | FVD ↓ | Agent Reward ↑ |
+|-------------|-------|-------|-------|-------|----------------|
+| CarRacing-v3 | VAE Baseline | 0.00165 | 59.46 | 239 | 734.96 ± 162.75 |
+| CarRacing-v3 | **DDS+VAE** | **0.00039** | **25.35** | **176** | **818.58 ± 147.05** |
+
+### Dream Sequences
+
+Our model generates more coherent and detailed "dream" sequences:
+
+<div align="center">
+<img src="notebooks (self-explanatory)/imgs/dream_diagram.png" alt="Dream Generation" width="80%">
+</div>
+
+<div align="center">
+<img src="resources/Dream.gif" alt="Dream Generation" width="80%">
+</div>
+
 
 ### Jupyter Notebooks
 
@@ -110,56 +176,7 @@ World Model DDS/
 └── README.md                        # This file
 ```
 
-## Technical Innovation
 
-### Dynamic Data Selection (DDS)
-
-Our key contribution is a novel unsupervised feature selection mechanism:
-
-```python
-# Conceptual overview
-X_filtered = DDS(X) ⊙ X  # Element-wise masking
-z = Encoder(X_filtered)   # Compressed representation
-X_reconstructed = Decoder(z)  # High-fidelity reconstruction
-```
-
-**Benefits:**
-- **Selective Attention**: Focus on relevant pixels (2-8% selection)
-- **Noise Reduction**: Filter out irrelevant background information
-- **Spatial Preservation**: Maintain image structure for CNNs
-- **End-to-End Training**: Fully differentiable architecture
-
-### Two-Phase Training Strategy
-
-<div align="center">
-<img src="notebooks (self-explanatory)/imgs/batch_training_conrtoller.png" alt="Training Process" width="70%">
-</div>
-
-**Phase 1: Sparse Representation Learning**
-- Train DDS + U-Nets for optimal sparse masks
-- Learn to reconstruct from extremely sparse inputs (2-8% pixels)
-
-**Phase 2: Latent Space Compression** 
-- Train Mini-VAE with perceptual loss
-- Compress sparse representations to normalized latent space
-
-## Experimental Results
-
-
-### Performance Metrics
-
-| Environment | Model | MSE ↓ | FID ↓ | FVD ↓ | Agent Reward ↑ |
-|-------------|-------|-------|-------|-------|----------------|
-| CarRacing-v3 | VAE Baseline | 0.00165 | 59.46 | 239 | 734.96 ± 162.75 |
-| CarRacing-v3 | **DDS+VAE** | **0.00039** | **25.35** | **176** | **818.58 ± 147.05** |
-
-### Dream Sequences
-
-Our model generates more coherent and detailed "dream" sequences:
-
-<div align="center">
-<img src="notebooks (self-explanatory)/imgs/dream_diagram.png" alt="Dream Generation" width="80%">
-</div>
 
 ## Technical Details
 
@@ -227,13 +244,22 @@ epochs_phase2 = 2
 
 - **3D Environments**: Extend to complex 3D worlds
 - **Online Learning**: Continuous adaptation during deployment  
-- **Attention Mechanisms**: Integration with transformer architectures
 - **Multi-Task Learning**: Generalization across different domains
-- **Real-time Performance**: Optimization for real-time applications
+- **Temporal coherence**: Optimization for long sequences
 
-## License
+## How to Contribute 🤝
+This is an open-source project, and contributions are welcome! This aligns with the "collaboration with other free software projects" value.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+1. Report Issues: Find a bug or have a suggestion? Open an issue.
+
+2. Submit Pull Requests:
+
+   - Fork the repository.
+   - Create a new branch (git checkout -b feature/YourFeature).
+   - Make your changes and commit them (git commit -m 'Add some feature').
+   - Push to your branch (git push origin feature/YourFeature).
+   - Open a Pull Request.
+
 
 ## Acknowledgments
 
@@ -242,12 +268,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Inspiration**: David Ha and Jürgen Schmidhuber's seminal World Models work
 - **Community**: The open-source deep learning and reinforcement learning communities
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
 ---
+
 
 <div align="center">
 
 **Star this repository if you find it helpful!**
 
-[Contact](mailto:bruno.corcuera@udc.es) • [University](https://www.udc.es/en/) • [Full Work](memoria.md)
+[Contact](mailto:bruno.corcuera@udc.es) • [University](https://www.udc.es/en/) • [Paper](https://arxiv.org/abs/2510.01758) • [Full Work](memoria/Memoria-TFG-GCED-Bruno-Corcuera-Sánchez.pdf)
 
 </div>
