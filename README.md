@@ -29,7 +29,7 @@ Main takeaways:
 
 - Paper: [Unsupervised Dynamic Feature Selection for Robust Latent Spaces in Vision Tasks](https://arxiv.org/abs/2510.01758)
 - Official TFG record at Universidade da Coruña: [RUC publication page](https://ruc.udc.es/entities/publication/adabf2d2-ee3d-4c3c-b734-486f68a0669d)
-- TFG defense: Facultade de Informática, Universidade da Coruña, 2 July 2025.
+- TFG defense: Facultade de Informática, Universidade da Coruña, 3 July 2025.
 
 If you use this work, please cite:
 
